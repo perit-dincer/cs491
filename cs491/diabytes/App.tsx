@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './app/screens/Login';
 import Home from './app/screens/Home';
 import EditAttributes from './app/screens/EditAttributes';
+import ImageView from './app/screens/ImageView';
 
 // Define the type for navigation parameters
 export type RootStackParamList = {
@@ -30,6 +31,7 @@ const App = () => {
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="EditAttributes" component={EditAttributes} />
+		<Stack.Screen name="ImageView" component={ImageView} />
       </Stack.Navigator>
     </NavigationContainer>
   );

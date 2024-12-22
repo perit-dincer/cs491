@@ -1,5 +1,3 @@
-// home.tsx
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -12,12 +10,11 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { db, auth, storage } from '../../FirebaseConfig';
+import { db, auth } from '../../FirebaseConfig';
 import {
   doc,
   getDoc,
   collection,
-  addDoc,
   query,
   orderBy,
   limit,
@@ -25,7 +22,6 @@ import {
 } from 'firebase/firestore';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 type UserAttributes = {
   name: string;
@@ -51,7 +47,6 @@ const Home = ({ navigation }: HomeScreenProps) => {
 
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [images, setImages] = useState<ImageData[]>([]);
-  const [uploading, setUploading] = useState<boolean>(false);
 
   useEffect(() => {
     const userId = auth.currentUser?.uid;
@@ -110,8 +105,7 @@ const Home = ({ navigation }: HomeScreenProps) => {
   const openCamera = async () => {
     try {
       // Request camera permissions
-      const { status } =
-        await ImagePicker.requestCameraPermissionsAsync();
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert(
           'Permission Denied',
@@ -139,8 +133,7 @@ const Home = ({ navigation }: HomeScreenProps) => {
         console.log('Photo URI:', asset.uri);
         setImageUri(asset.uri);
 
-        // Upload the image to Firebase
-        await uploadImage(asset.uri);
+        // Here, we no longer upload the image to Firebase
       }
     } catch (error) {
       console.error('Error opening camera:', error);
@@ -150,58 +143,6 @@ const Home = ({ navigation }: HomeScreenProps) => {
           ? error.message
           : 'Unable to open the camera. Please try again.'
       );
-    }
-  };
-
-  const uploadImage = async (uri: string) => {
-    setUploading(true);
-    try {
-      const userId = auth.currentUser?.uid;
-      if (!userId) {
-        Alert.alert('Error', 'User not authenticated.');
-        setUploading(false);
-        return;
-      }
-
-      // Convert URI to blob
-      const response = await fetch(uri);
-      if (!response.ok) {
-        throw new Error('Failed to fetch image.');
-      }
-      const blob = await response.blob();
-      if (!blob) {
-        throw new Error('Failed to convert image URI to blob.');
-      }
-
-      // Create a unique file name
-      const timestamp = Date.now();
-      const fileRef = ref(storage, `users/${userId}/images/${timestamp}.jpg`);
-
-      // Upload the blob to Firebase Storage
-      await uploadBytes(fileRef, blob);
-
-      // Get the download URL
-      const downloadURL = await getDownloadURL(fileRef);
-      console.log('Download URL:', downloadURL);
-
-      // Save the download URL to Firestore
-      const imagesCollection = collection(db, 'users', userId, 'images');
-      await addDoc(imagesCollection, {
-        url: downloadURL,
-        timestamp: new Date(),
-      });
-
-      Alert.alert('Success', 'Photo uploaded successfully!');
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      Alert.alert(
-        'Upload Error',
-        error instanceof Error
-          ? error.message
-          : 'An unexpected error occurred during the upload.'
-      );
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -226,14 +167,13 @@ const Home = ({ navigation }: HomeScreenProps) => {
         <Button
           title="Open Camera"
           onPress={openCamera}
-          disabled={uploading}
         />
       </View>
 
-      {uploading && (
+      {imageUri && (
         <View style={styles.uploadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text>Uploading...</Text>
+          <Text>Image preview:</Text>
+          <Image source={{ uri: imageUri }} style={styles.imagePreview} />
         </View>
       )}
 
@@ -245,6 +185,7 @@ const Home = ({ navigation }: HomeScreenProps) => {
             key={index}
             source={{ uri: image.url }}
             style={styles.image}
+            onPress={() => navigation.navigate('ImageView', { imageUrl: image.url })}
           />
         ))}
       </View>
@@ -288,5 +229,11 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  imagePreview: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+    marginTop: 10,
   },
 });
