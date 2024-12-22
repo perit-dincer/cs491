@@ -1,5 +1,5 @@
 # Node modules
-node_modules/
+cs491/diabytes/node_modules/
 
 # Build directories
 build/
