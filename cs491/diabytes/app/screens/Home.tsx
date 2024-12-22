@@ -112,6 +112,12 @@ const Home = ({ navigation }: HomeScreenProps) => {
         <Text>Language: {userAttributes.language}</Text>
 
         <Button
+          title="View Meals"
+          onPress={() => navigation.navigate('Meals')}
+        />
+
+
+        <Button
           title="Edit Attributes"
           onPress={() =>
             navigation.navigate('EditAttributes', {
