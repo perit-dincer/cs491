@@ -1,6 +1,5 @@
 # Node modules
 cs491/diabytes/node_modules/
-
 # Build directories
 build/
 dist/
