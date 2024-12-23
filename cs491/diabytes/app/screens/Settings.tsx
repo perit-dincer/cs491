@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import BottomNavbar from '../components/BottomNavbar';
 
-const Settings = () => {
+const Settings = ({ navigation }: null) => {
   return (
     <ScrollView contentContainerStyle={styles.optionsContainer}>
       <Text style={styles.header}>Options</Text>
@@ -35,7 +36,9 @@ const Settings = () => {
           <Text style={styles.optionText}>Log Out</Text>
         </TouchableOpacity>
       </View>
+	  <BottomNavbar navigation={navigation} />
     </ScrollView>
+	
   );
 };
 

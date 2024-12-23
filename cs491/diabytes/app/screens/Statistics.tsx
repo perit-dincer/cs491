@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import BottomNavbar from '../components/BottomNavbar';
 
-const Statistics = () => {
+const Statistics = ({ navigation }: null) => {
   return (
     <ScrollView contentContainerStyle={styles.statisticsContainer}>
       <Text style={styles.header}>Statistics</Text>
@@ -17,6 +18,7 @@ const Statistics = () => {
         <Text style={styles.cardTitle}>Daily Averages</Text>
         <Text style={styles.cardContent}>See the average statistics for your recent measurements.</Text>
       </View>
+	  <BottomNavbar navigation={navigation} />
     </ScrollView>
   );
 };
