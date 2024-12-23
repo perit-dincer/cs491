@@ -7,6 +7,7 @@ import EditAttributes from './app/screens/EditAttributes';
 import ImageView from './app/screens/ImageView';
 import CalculateCalories from './app/screens/CalculateCalories';
 import Meals from './app/screens/Meals';
+import Settings from './app/screens/Settings';
 
 // Define the type for navigation parameters
 export type RootStackParamList = {
@@ -36,7 +37,8 @@ const App = () => {
         <Stack.Screen name="EditAttributes" component={EditAttributes} />
 		<Stack.Screen name="ImageView" component={ImageView} />
 		<Stack.Screen name="CalculateCalories" component={CalculateCalories} />
-    <Stack.Screen name="Meals" component={Meals} />
+		<Stack.Screen name="Settings" component={Settings} />
+    	<Stack.Screen name="Meals" component={Meals} />
       </Stack.Navigator>
     </NavigationContainer>
   );
