@@ -1,5 +1,6 @@
 # Node modules
 cs491/diabytes/node_modules/
+cs491/diabytes/.expo/
 # Build directories
 build/
 dist/
