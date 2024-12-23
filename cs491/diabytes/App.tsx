@@ -8,6 +8,7 @@ import ImageView from './app/screens/ImageView';
 import CalculateCalories from './app/screens/CalculateCalories';
 import Meals from './app/screens/Meals';
 import Settings from './app/screens/Settings';
+import Statistics from './app/screens/Statistics';
 
 // Define the type for navigation parameters
 export type RootStackParamList = {
@@ -39,6 +40,7 @@ const App = () => {
 		<Stack.Screen name="CalculateCalories" component={CalculateCalories} />
 		<Stack.Screen name="Settings" component={Settings} />
     	<Stack.Screen name="Meals" component={Meals} />
+		<Stack.Screen name="Statistics" component={Statistics} />
       </Stack.Navigator>
     </NavigationContainer>
   );
